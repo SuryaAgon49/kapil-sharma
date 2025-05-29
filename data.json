@@ -1,0 +1,84 @@
+{
+  "profile": {
+    "name": "Kapil Sharma",
+    "photo": "static/profile.jpg",
+    "contact": {
+      "phone": "8595952141",
+      "email": "kapil.sharma.181410@gmail.com",
+      "linkedin": "https://linkedin.com/in/kapil-sharma-181410-yash",
+      "address": "H.N.231-A, West Azad Nagar, Delhi-51"
+    }
+  },
+  "experience": [
+    {
+      "company": "Paharpur 3P Pvt. Ltd.",
+      "duration": "Aug 2020 – Present",
+      "position": "Senior Executive - Sales & Marketing (CSC)",
+      "logo": "static/logos/paharpur.png",
+      "description": "Leading sales and marketing initiatives for CSC division"
+    },
+    {
+      "company": "TCPL PACKAGING LTD. JASOLA, NEW DELHI",
+      "position": "Sales Officer",
+      "duration": "Apr.2019 - Aug.2020",
+      "logo": "static/logos/tcpl.png",
+      "description": "Worked as a sales officer in TCPL Packaging Ltd."
+    },
+    {
+      "company": "JINDAL GROUP (JINDAL PHOTO LTD./JINDAL POLY FILMS  LIMITED), NEW DELHI",
+      "position": "Executive (Sales & Marketing)",
+      "duration": "May.2008 - Apr.2019",
+      "logo": "static/logos/jindal.png",
+      "description": "Worked as Sales & Marketing Executive in JINDAL POLY FILMS"
+    },
+    {
+      "company": "MEDICO ELECTRODES INDIA PVT. LTD., NOIDA",
+      "position": "Account Assistant",
+      "duration": "Apr.2005 - Apr.2008",
+      "logo": "static/logos/medico.png",
+      "description": "Work as Accounts Assistant in MEDICO ELECTRODES INDIA PVT. LTD"
+    },
+    {
+      "company": "CEPHAM GROUP OF COMPANIES, GURGAON",
+      "position": "Sales Officer",
+      "duration": "Jul.2002 - Apr.2005",
+      "logo": "static/logos/cepham.png",
+      "description": "Worked as sales officer in CEPHAM GROUP OF COMPANIES"
+    }
+  ],
+  "education": [
+    {
+      "degree": "Bachelor of Commerce",
+      "institute": "University of Delhi",
+      "year": "1999–2002",
+      "icon": "static/icons/education.png"
+    }
+  ],
+  "achievements": [
+    "SAP/SAP Hana Training Program",
+    "ISO Awareness Training",
+    "FGS Audits Participation"
+  ],
+  "skills": [
+    "Sales & Marketing",
+    "Customer Service",
+    "SAP/SAP Hana",
+    "Business Development",
+    "Team Leadership",
+    "Supply Planning/Demand Planning",
+    "Distribution Planner",
+    "Transport Planning",
+    "Sales Management",
+    "Planning & Organizing",
+    "Creativity",
+    "Project management",
+    "Strong decision maker",
+    "Complex problem solver",
+    "Marketing Management",
+    "Innovative"
+  ],
+  "languages": [
+    "English",
+    "Hindi"
+  ]
+}

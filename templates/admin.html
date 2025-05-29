@@ -1,0 +1,371 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Panel - Portfolio Management</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='admin.css') }}">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+</head>
+<body>
+    <div class="admin-container">
+        <!-- Sidebar -->
+        <aside class="sidebar">
+            <div class="sidebar-header">
+                <h2><i class="fas fa-cog"></i> Admin Panel</h2>
+            </div>
+            <nav class="sidebar-nav">
+                <a href="#profile" class="nav-item active" onclick="showSection('profile')">
+                    <i class="fas fa-user"></i> Profile
+                </a>
+                <a href="#experience" class="nav-item" onclick="showSection('experience')">
+                    <i class="fas fa-briefcase"></i> Experience
+                </a>
+                <a href="#education" class="nav-item" onclick="showSection('education')">
+                    <i class="fas fa-graduation-cap"></i> Education
+                </a>
+                <a href="#achievements" class="nav-item" onclick="showSection('achievements')">
+                    <i class="fas fa-trophy"></i> Achievements
+                </a>
+                <a href="#skills" class="nav-item" onclick="showSection('skills')">
+                    <i class="fas fa-tools"></i> Skills
+                </a>
+                <a href="/" class="nav-item view-portfolio">
+                    <i class="fas fa-eye"></i> View Portfolio
+                </a>
+            </nav>
+        </aside>
+
+        <!-- Main Content -->
+        <main class="main-content">
+            <div class="content-header">
+                <h1>Portfolio Management</h1>
+                <div class="breadcrumb">
+                    <span>Admin</span> / <span id="current-section">Profile</span>
+                </div>
+            </div>
+
+            <!-- Flash Messages -->
+            {% with messages = get_flashed_messages(with_categories=true) %}
+                {% if messages %}
+                    <div class="flash-messages">
+                        {% for category, message in messages %}
+                            <div class="flash-message flash-{{ category }}">
+                                <i class="fas fa-{{ 'check-circle' if category == 'success' else 'exclamation-triangle' }}"></i>
+                                {{ message }}
+                                <button onclick="this.parentElement.remove()" class="close-btn">&times;</button>
+                            </div>
+                        {% endfor %}
+                    </div>
+                {% endif %}
+            {% endwith %}
+
+            <!-- Profile Section -->
+            <section id="profile-section" class="admin-section active">
+                <div class="section-header">
+                    <h2><i class="fas fa-user"></i> Profile Information</h2>
+                </div>
+                <div class="card">
+                    <form method="post" action="/admin/edit_profile" class="form">
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="name">Full Name</label>
+                                <input type="text" id="name" name="name" value="{{ data.profile.name }}" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="email">Email</label>
+                                <input type="email" id="email" name="email" value="{{ data.profile.contact.email }}" required>
+                            </div>
+                        </div>
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="phone">Phone</label>
+                                <input type="tel" id="phone" name="phone" value="{{ data.profile.contact.phone }}" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="linkedin">LinkedIn URL</label>
+                                <input type="url" id="linkedin" name="linkedin" value="{{ data.profile.contact.linkedin }}">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="address">Address</label>
+                            <input type="text" id="address" name="address" value="{{ data.profile.contact.address }}">
+                        </div>
+                        <div class="form-group">
+                            <label for="photo">Profile Photo Path</label>
+                            <input type="text" id="photo" name="photo" value="{{ data.profile.photo }}" placeholder="static/profile.jpg">
+                        </div>
+                        <button type="submit" class="btn btn-primary">
+                            <i class="fas fa-save"></i> Update Profile
+                        </button>
+                    </form>
+                </div>
+            </section>
+
+            <!-- Experience Section -->
+            <section id="experience-section" class="admin-section">
+                <div class="section-header">
+                    <h2><i class="fas fa-briefcase"></i> Work Experience</h2>
+                </div>
+                
+                <!-- Add Experience Form -->
+                <div class="card">
+                    <h3>Add New Experience</h3>
+                    <form method="post" action="/admin/add_experience" class="form">
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="company">Company Name</label>
+                                <input type="text" id="company" name="company" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="position">Position</label>
+                                <input type="text" id="position" name="position" required>
+                            </div>
+                        </div>
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="duration">Duration</label>
+                                <input type="text" id="duration" name="duration" placeholder="e.g., Jan 2020 - Present" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="logo">Company Logo Path</label>
+                                <input type="text" id="logo" name="logo" placeholder="static/logos/company.png">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="description">Job Description</label>
+                            <textarea id="description" name="description" rows="3" placeholder="Brief description of your role and responsibilities"></textarea>
+                        </div>
+                        <button type="submit" class="btn btn-primary">
+                            <i class="fas fa-plus"></i> Add Experience
+                        </button>
+                    </form>
+                </div>
+
+                <!-- Existing Experience -->
+                <div class="card">
+                    <h3>Current Experience Entries</h3>
+                    <div class="items-list">
+                        {% for i, job in enumerate(data.experience) %}
+                        <div class="item">
+                            <div class="item-content">
+                                <h4>{{ job.position }}</h4>
+                                <p><strong>{{ job.company }}</strong> | {{ job.duration }}</p>
+                                {% if job.description %}
+                                <p class="description">{{ job.description }}</p>
+                                {% endif %}
+                            </div>
+                            <div class="item-actions">
+                                <a href="/admin/delete/experience/{{ i }}" class="btn btn-danger btn-sm" 
+                                   onclick="return confirm('Are you sure you want to delete this experience?')">
+                                    <i class="fas fa-trash"></i> Delete
+                                </a>
+                            </div>
+                        </div>
+                        {% endfor %}
+                    </div>
+                </div>
+            </section>
+
+            <!-- Education Section -->
+            <section id="education-section" class="admin-section">
+                <div class="section-header">
+                    <h2><i class="fas fa-graduation-cap"></i> Education</h2>
+                </div>
+                
+                <!-- Add Education Form -->
+                <div class="card">
+                    <h3>Add New Education</h3>
+                    <form method="post" action="/admin/add_education" class="form">
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="degree">Degree/Qualification</label>
+                                <input type="text" id="degree" name="degree" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="institute">Institution</label>
+                                <input type="text" id="institute" name="institute" required>
+                            </div>
+                        </div>
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="year">Year/Duration</label>
+                                <input type="text" id="year" name="year" placeholder="e.g., 2018-2022" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="icon">Education Icon Path</label>
+                                <input type="text" id="icon" name="icon" placeholder="static/icons/education.png">
+                            </div>
+                        </div>
+                        <button type="submit" class="btn btn-primary">
+                            <i class="fas fa-plus"></i> Add Education
+                        </button>
+                    </form>
+                </div>
+
+                <!-- Existing Education -->
+                <div class="card">
+                    <h3>Current Education Entries</h3>
+                    <div class="items-list">
+                        {% for i, edu in enumerate(data.education) %}
+                        <div class="item">
+                            <div class="item-content">
+                                <h4>{{ edu.degree }}</h4>
+                                <p><strong>{{ edu.institute }}</strong> | {{ edu.year }}</p>
+                            </div>
+                            <div class="item-actions">
+                                <a href="/admin/delete/education/{{ i }}" class="btn btn-danger btn-sm" 
+                                   onclick="return confirm('Are you sure you want to delete this education entry?')">
+                                    <i class="fas fa-trash"></i> Delete
+                                </a>
+                            </div>
+                        </div>
+                        {% endfor %}
+                    </div>
+                </div>
+            </section>
+
+            <!-- Achievements Section -->
+            <section id="achievements-section" class="admin-section">
+                <div class="section-header">
+                    <h2><i class="fas fa-trophy"></i> Achievements</h2>
+                </div>
+                
+                <!-- Add Achievement Form -->
+                <div class="card">
+                    <h3>Add New Achievement</h3>
+                    <form method="post" action="/admin/add_achievement" class="form">
+                        <div class="form-group">
+                            <label for="achievement">Achievement</label>
+                            <input type="text" id="achievement" name="achievement" required placeholder="Enter achievement or certification">
+                        </div>
+                        <button type="submit" class="btn btn-primary">
+                            <i class="fas fa-plus"></i> Add Achievement
+                        </button>
+                    </form>
+                </div>
+
+                <!-- Existing Achievements -->
+                <div class="card">
+                    <h3>Current Achievements</h3>
+                    <div class="items-list">
+                        {% for i, achievement in enumerate(data.achievements) %}
+                        <div class="item">
+                            <div class="item-content">
+                                <p>{{ achievement }}</p>
+                            </div>
+                            <div class="item-actions">
+                                <a href="/admin/delete/achievements/{{ i }}" class="btn btn-danger btn-sm" 
+                                   onclick="return confirm('Are you sure you want to delete this achievement?')">
+                                    <i class="fas fa-trash"></i> Delete
+                                </a>
+                            </div>
+                        </div>
+                        {% endfor %}
+                    </div>
+                </div>
+            </section>
+
+            <!-- Skills Section -->
+            <section id="skills-section" class="admin-section">
+                <div class="section-header">
+                    <h2><i class="fas fa-tools"></i> Skills</h2>
+                </div>
+                
+                <!-- Add Skill Form -->
+                <div class="card">
+                    <h3>Add New Skill</h3>
+                    <form method="post" action="/admin/add_skill" class="form">
+                        <div class="form-group">
+                            <label for="skill">Skill Name</label>
+                            <input type="text" id="skill" name="skill" required placeholder="Enter skill name">
+                        </div>
+                        <button type="submit" class="btn btn-primary">
+                            <i class="fas fa-plus"></i> Add Skill
+                        </button>
+                    </form>
+                </div>
+
+                <!-- Existing Skills -->
+                <div class="card">
+                    <h3>Current Skills</h3>
+                    <div class="skills-grid">
+                        {% for i, skill in enumerate(data.skills) %}
+                        <div class="skill-item">
+                            <span class="skill-name">{{ skill }}</span>
+                            <a href="/admin/delete/skills/{{ i }}" class="delete-skill" 
+                               onclick="return confirm('Are you sure you want to delete this skill?')">
+                                <i class="fas fa-times"></i>
+                            </a>
+                        </div>
+                        {% endfor %}
+                    </div>
+                </div>
+            </section>
+        </main>
+    </div>
+
+    <script>
+        function showSection(sectionName) {
+            // Hide all sections
+            document.querySelectorAll('.admin-section').forEach(section => {
+                section.classList.remove('active');
+            });
+            
+            // Remove active class from all nav items
+            document.querySelectorAll('.nav-item').forEach(item => {
+                item.classList.remove('active');
+            });
+            
+            // Show selected section
+            document.getElementById(sectionName + '-section').classList.add('active');
+            
+            // Add active class to clicked nav item
+            event.target.classList.add('active');
+            
+            // Update breadcrumb
+            document.getElementById('current-section').textContent = 
+                sectionName.charAt(0).toUpperCase() + sectionName.slice(1);
+        }
+
+        // Auto-hide flash messages after 5 seconds
+        setTimeout(() => {
+            document.querySelectorAll('.flash-message').forEach(msg => {
+                msg.style.opacity = '0';
+                setTimeout(() => msg.remove(), 300);
+            });
+        }, 5000);
+
+        // Form validation
+        document.querySelectorAll('form').forEach(form => {
+            form.addEventListener('submit', function(e) {
+                const requiredFields = form.querySelectorAll('input[required], textarea[required]');
+                let isValid = true;
+                
+                requiredFields.forEach(field => {
+                    if (!field.value.trim()) {
+                        field.classList.add('error');
+                        isValid = false;
+                    } else {
+                        field.classList.remove('error');
+                    }
+                });
+                
+                if (!isValid) {
+                    e.preventDefault();
+                    alert('Please fill in all required fields.');
+                }
+            });
+        });
+
+        // Clear form after successful submission
+        if (window.location.hash) {
+            const section = window.location.hash.substring(1);
+            showSection(section);
+        }
+    </script>
+</body>
+</html>
