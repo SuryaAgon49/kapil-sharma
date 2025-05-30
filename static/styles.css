@@ -1783,3 +1783,42 @@ body {
   0% { background-position: 200% 0; }
   100% { background-position: -200% 0; }
 }
+.resume-download {
+    margin-top: 20px;
+    display: flex;
+    justify-content: center;
+}
+
+.download-btn {
+    background: linear-gradient(to right, #4f46e5, #3b82f6);
+    color: #fff;
+    padding: 12px 24px;
+    font-size: 1rem;
+    font-weight: 600;
+    border: none;
+    border-radius: 8px;
+    text-decoration: none;
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    transition: transform 0.2s ease, box-shadow 0.3s ease;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+}
+
+.download-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
+    background: linear-gradient(to right, #4338ca, #2563eb);
+}
+
+.download-btn i {
+    font-size: 1.2rem;
+}
+
+/* Responsive for smaller devices */
+@media (max-width: 600px) {
+    .download-btn {
+        padding: 10px 20px;
+        font-size: 0.95rem;
+    }
+}
